@@ -36,7 +36,7 @@ app.use(
       } catch {
         /* deny */
       }
-      callback(new Error(`CORS blocked: ${origin}`));
+      callback(null, false);
     },
     credentials: true,
   }),
@@ -105,6 +105,8 @@ async function start() {
   await migrate();
   app.listen(config.port, () => {
     console.log(`Tsotan API http://localhost:${config.port}`);
+    console.log("PUBLIC_URL", config.publicUrl);
+    console.log("CORS", config.corsOrigins.join(", "));
     scheduleQpayPoll();
   });
 }
