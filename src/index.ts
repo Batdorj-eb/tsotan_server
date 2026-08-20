@@ -16,12 +16,28 @@ fs.mkdirSync(path.join(process.cwd(), "uploads"), { recursive: true });
 const app = express();
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "http://localhost:3001",
-      "https://tsotan.mn",
-      "https://www.tsotan.mn",
-    ],
+    origin(origin, callback) {
+      if (!origin) {
+        callback(null, true);
+        return;
+      }
+      try {
+        const allowedHost = new URL(config.publicUrl).hostname;
+        const requestHost = new URL(origin).hostname;
+        if (
+          requestHost === allowedHost ||
+          config.corsOrigins.includes(origin) ||
+          requestHost === "localhost" ||
+          requestHost === "127.0.0.1"
+        ) {
+          callback(null, true);
+          return;
+        }
+      } catch {
+        /* deny */
+      }
+      callback(new Error(`CORS blocked: ${origin}`));
+    },
     credentials: true,
   }),
 );
