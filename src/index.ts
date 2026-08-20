@@ -1,6 +1,5 @@
 import cors from "cors";
 import express from "express";
-import path from "node:path";
 import fs from "node:fs";
 import { config } from "./config.js";
 import { pool } from "./db.js";
@@ -11,7 +10,7 @@ import { mailRouter } from "./routes/mail.js";
 import { orderRouter, syncCreatedPayments } from "./routes/order.js";
 import { productRouter } from "./routes/product.js";
 
-fs.mkdirSync(path.join(process.cwd(), "uploads"), { recursive: true });
+fs.mkdirSync(config.uploadsDir, { recursive: true });
 
 const app = express();
 app.use(
@@ -39,10 +38,12 @@ app.use(
       callback(null, false);
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
 app.use(express.json({ limit: "10mb" }));
-app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+app.use("/uploads", express.static(config.uploadsDir));
 
 app.get("/health", (_req, res) => res.json({ ok: true }));
 app.use("/auth", authRouter);

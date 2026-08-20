@@ -2,6 +2,7 @@ import { Router } from "express";
 import multer from "multer";
 import path from "node:path";
 import fs from "node:fs";
+import { config } from "../config.js";
 import { query, queryOne, publicFileUrl } from "../db.js";
 import { requireAdmin } from "../middleware/auth.js";
 import {
@@ -11,7 +12,7 @@ import {
   toProductDto,
 } from "../services/catalog.js";
 
-const uploadDir = path.join(process.cwd(), "uploads");
+const uploadDir = config.uploadsDir;
 fs.mkdirSync(uploadDir, { recursive: true });
 
 const upload = multer({

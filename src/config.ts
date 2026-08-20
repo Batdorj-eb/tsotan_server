@@ -1,4 +1,8 @@
 import "dotenv/config";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const rootDir = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 function corsOrigins() {
   const listed = (
@@ -32,6 +36,8 @@ export const config = {
     "postgres://tsotan:tsotan@localhost:5432/tsotan",
   jwtSecret: process.env.JWT_SECRET || "change-this-secret",
   publicUrl: process.env.PUBLIC_URL || "http://localhost:4000",
+  rootDir,
+  uploadsDir: path.join(rootDir, "uploads"),
   corsOrigins: corsOrigins(),
   adminUsername: process.env.ADMIN_USERNAME || "admin",
   adminPassword: process.env.ADMIN_PASSWORD || "admin123",
