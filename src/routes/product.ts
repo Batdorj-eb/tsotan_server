@@ -23,7 +23,7 @@ const upload = multer({
       cb(null, `${Date.now()}-${Math.round(Math.random() * 1e6)}${ext}`);
     },
   }),
-  limits: { fileSize: 8 * 1024 * 1024 },
+  limits: { fileSize: 50 * 1024 * 1024 },
 });
 
 export const productRouter = Router();

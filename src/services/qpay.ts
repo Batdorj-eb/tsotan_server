@@ -50,7 +50,7 @@ export function qpayErrorMessage(err: unknown): string {
 async function qpayFetch(path: string, init: RequestInit) {
   const res = await fetch(`${config.qpay.baseUrl}${path}`, {
     ...init,
-    signal: AbortSignal.timeout(8000),
+    signal: init.signal ?? AbortSignal.timeout(20_000),
   });
   const text = await res.text();
   let data: unknown = text;

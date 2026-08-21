@@ -98,6 +98,7 @@ orderRouter.post("/qpay-invoice", async (req, res, next) => {
     orderId: order.id,
   });
   } catch (err) {
+    console.error("QPay invoice", qpayErrorMessage(err));
     next(err);
   }
 });
